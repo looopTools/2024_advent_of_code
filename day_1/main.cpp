@@ -11,7 +11,6 @@
 void read_file(std::filesystem::path input_path, std::vector<uint64_t>& lhs,
                std::vector<uint64_t>& rhs, const std::string delimter = "   ")
 {
-
     std::ifstream input_file(input_path);
 
     uint64_t lhs_value, rhs_value;
@@ -22,7 +21,6 @@ void read_file(std::filesystem::path input_path, std::vector<uint64_t>& lhs,
         rhs.push_back(rhs_value);
     }
 
-
     std::sort(lhs.begin(), lhs.end());
     std::sort(rhs.begin(), rhs.end());
 }
@@ -31,7 +29,6 @@ void read_file(std::filesystem::path input_path, std::vector<uint64_t>& lhs,
 uint64_t compute_total_distance(const std::vector<uint64_t>& lhs,
                     const std::vector<uint64_t>& rhs)
 {
-
     uint64_t total_distance = 0;
     for (size_t i = 0; i < lhs.size(); ++i)
     {
@@ -55,17 +52,18 @@ uint64_t compute_similarity_score(const std::vector<uint64_t> &lhs,
     size_t i = 0;
     size_t j = 0;
 
-
     std::map<uint64_t, uint64_t> cache;
 
     uint64_t similarity_score = 0;
 
-    for (const auto value : lhs) {
-        if (!cache.contains(value)) {
+    for (const auto value : lhs)
+    {
+        if (!cache.contains(value))
+        {
             cache[value] = std::count(rhs.begin(), rhs.end(), value);
         }
-        similarity_score = similarity_score + (value * cache[value]);
 
+        similarity_score = similarity_score + (value * cache[value]);
     }
 
     return similarity_score;
