@@ -60,22 +60,32 @@ std::vector<std::vector<int>> read_file(const std::filesystem::path &path)
 //     }
 // };
 
-auto follows_descending_bound(const auto &vec) {
+bool follows_descending_bound(const auto &vec, bool first_try=true) {
 
     for (size_t i = 0; i < std::size(vec) - 1; ++i) {
-        if (!(vec.at(i) > vec.at(i + 1) and vec.at(i) - 3 <= vec.at(i + 1)))// and vec.at(i + 1) >= vec.at(i) - 3))
+        if (!(vec.at(i) > vec.at(i + 1) and vec.at(i) - 3 <= vec.at(i + 1)))
         {
+            if (first_try) {
+                auto vec2 = vec;
+                vec2.erase(vec2.begin() + i);
+                return follows_descending_bound(vec2, false);
+            }
             return false;
         }
     }
     return true;
 }
 
-auto follows_ascending_bound(const auto &vec) {
+bool follows_ascending_bound(const auto &vec, bool first_try=true) {
 
     for (size_t i = 0; i < std::size(vec) - 1; ++i) {
-        if (!(vec.at(i) < vec.at(i + 1) and vec.at(i + 1) <= vec.at(i) + 3))// and vec.at(i + 1) >= vec.at(i) + 3))
+        if (!(vec.at(i) < vec.at(i + 1) and vec.at(i + 1) <= vec.at(i) + 3))
         {
+            if (first_try) {
+                auto vec2 = vec;
+                vec2.erase(vec2.begin() + i);
+                return follows_ascending_bound(vec2, false);
+            }
 
             return false;
         }
@@ -106,10 +116,10 @@ int main(int argc, char *argv[]) {
 
             for (const auto& entry : data) {
                 if (is_safe(entry)) {
-                    utils::print_numeric_vector(entry);
                     count_valid = count_valid + 1;
                 }
             }
+
             std::cout << "Number of valids: " << std::to_string(count_valid) << "\n";
 
         }
