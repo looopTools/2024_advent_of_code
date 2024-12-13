@@ -68,7 +68,9 @@ bool follows_descending_bound(const auto &vec, bool first_try=true) {
             if (first_try) {
                 auto vec2 = vec;
                 vec2.erase(vec2.begin() + i);
-                return follows_descending_bound(vec2, false);
+                auto vec3 = vec;
+                vec3.erase(vec3.begin() + i + 1);
+                return follows_descending_bound(vec2, false) or follows_descending_bound(vec3, false);
             }
             return false;
         }
@@ -76,6 +78,7 @@ bool follows_descending_bound(const auto &vec, bool first_try=true) {
     return true;
 }
 
+// Change second run to use while loop
 bool follows_ascending_bound(const auto &vec, bool first_try=true) {
 
     for (size_t i = 0; i < std::size(vec) - 1; ++i) {
@@ -84,7 +87,9 @@ bool follows_ascending_bound(const auto &vec, bool first_try=true) {
             if (first_try) {
                 auto vec2 = vec;
                 vec2.erase(vec2.begin() + i);
-                return follows_ascending_bound(vec2, false);
+                auto vec3 = vec;
+                vec3.erase(vec3.begin() + i + 1);
+                return follows_ascending_bound(vec2, false) or follows_ascending_bound(vec3, false);
             }
 
             return false;
